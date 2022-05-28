@@ -1,4 +1,4 @@
-package com.example.rxjava.ui.main;
+package com.example.rxjava;
 
 import android.annotation.SuppressLint;
 
@@ -22,12 +22,13 @@ public class MainViewModel extends ViewModel {
     private final CompositeDisposable mDisposable = new CompositeDisposable();
     private final MutableLiveData<Novel> mNovel = new MutableLiveData<>();
     private final MutableLiveData<Chapter> mChapter = new MutableLiveData<>();
-    private final LiveData<String> mTitle = Transformations.map(mChapter, Chapter::getTitle);
+    private final MutableLiveData<Integer> mPosition = new MutableLiveData<>(0);
+    private final LiveData<String> mTitle = Transformations.map(mChapter, chapter ->
+            "第" + (mPosition.getValue() + 1) + "章 " + chapter.getTitle());
     private final LiveData<String> mContent = Transformations.map(mChapter, input ->
             input.getContent()
                     .stream()
-                    .reduce((s1, s2) -> s1 + "\n\n" + "        " + s2)
-                    .get());
+                    .reduce("        ", (s1, s2) -> s1 + "\n\n" + "        " + s2));
 
     public MutableLiveData<Novel> getNovel() {
         return mNovel;
@@ -35,6 +36,17 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<String> getTitle() {
         return mTitle;
+    }
+
+    public void setPosition(int position) {
+        mPosition.setValue(position);
+        setChapter(mNovel.getValue().getCatalog().get(position).getUrl());
+    }
+
+    public void toNext() {
+        if (mPosition.getValue() != mNovel.getValue().getCatalog().size() - 1) {
+            setPosition(mPosition.getValue() + 1);
+        }
     }
 
     public LiveData<String> getContent() {
@@ -47,8 +59,8 @@ public class MainViewModel extends ViewModel {
                 .subscribe(mNovel::postValue));
     }
 
-    public void setChapter(int position) {
-        mDisposable.add(getChapter(mNovel.getValue().getCatalog().get(position).getUrl())
+    private void setChapter(String url) {
+        mDisposable.add(getChapter(url)
                 .subscribeOn(Schedulers.io())
                 .subscribe(mChapter::postValue));
     }

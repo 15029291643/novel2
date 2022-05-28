@@ -4,16 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.rxjava.MainViewModel;
 import com.example.rxjava.databinding.FragmentCatalogBinding;
-import com.example.rxjava.logic.network.ConstantUtils;
-import com.example.rxjava.ui.main.MainViewModel;
 
 public class CatalogFragment extends Fragment {
 

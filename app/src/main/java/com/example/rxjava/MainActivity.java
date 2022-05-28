@@ -1,14 +1,10 @@
-package com.example.rxjava.ui.main;
+package com.example.rxjava;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.rxjava.R;
 import com.example.rxjava.databinding.ActivityMainBinding;
 import com.example.rxjava.logic.network.ConstantUtils;
 
