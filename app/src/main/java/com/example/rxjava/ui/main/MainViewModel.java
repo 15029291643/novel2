@@ -1,4 +1,4 @@
-package com.example.rxjava.ui;
+package com.example.rxjava.ui.main;
 
 import android.annotation.SuppressLint;
 
@@ -29,10 +29,6 @@ public class MainViewModel extends ViewModel {
                     .reduce((s1, s2) -> s1 + "\n\n" + "        " + s2)
                     .get());
 
-    public MainViewModel(String url) {
-        setNovel(url);
-    }
-
     public MutableLiveData<Novel> getNovel() {
         return mNovel;
     }
@@ -51,18 +47,20 @@ public class MainViewModel extends ViewModel {
                 .subscribe(mNovel::postValue));
     }
 
-    public void setChapter(String url) {
-        mDisposable.add(getChapter(url)
+    public void setChapter(int position) {
+        mDisposable.add(getChapter(mNovel.getValue().getCatalog().get(position).getUrl())
                 .subscribeOn(Schedulers.io())
                 .subscribe(mChapter::postValue));
     }
 
     @SuppressLint("CheckResult")
     public Flowable<Novel> getNovel(String url) {
-        return Flowable.create(emitter -> emitter.onNext(OkhttpUtils.getNovel(url)), BackpressureStrategy.ERROR);
+        return Flowable.create(emitter ->
+                emitter.onNext(OkhttpUtils.getNovel(url)), BackpressureStrategy.ERROR);
     }
 
     public Flowable<Chapter> getChapter(String url) {
-        return Flowable.create(emitter -> emitter.onNext(OkhttpUtils.getChapter(url)), BackpressureStrategy.ERROR);
+        return Flowable.create(emitter ->
+                emitter.onNext(OkhttpUtils.getChapter(url)), BackpressureStrategy.ERROR);
     }
 }

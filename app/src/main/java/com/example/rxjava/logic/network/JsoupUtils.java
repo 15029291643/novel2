@@ -23,7 +23,7 @@ public class JsoupUtils {
         String title = parse.selectFirst("body > div.chapterlist > h2 > strong").text();
         Elements elements = parse.select("#myarticle > table > tbody > tr > td > a");
         List<Chapter> catalog = elements.stream().map(element ->
-                new Chapter(elements.attr("href"),
+                new Chapter(element.text(),
                         ConstantUtils.BASE_URL + element.attr("href")))
                 .collect(Collectors.toList());
         Novel novel = new Novel();
