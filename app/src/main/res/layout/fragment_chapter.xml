@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/yellow2"
     android:paddingStart="16dp"
-    android:paddingTop="16dp"
+    android:paddingTop="48dp"
     android:paddingBottom="16dp"
     tools:context=".ui.chapter.ChapterFragment">
 
